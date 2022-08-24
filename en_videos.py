@@ -50,7 +50,7 @@ def get_videos_details(youtube, video_ids):
     all_video_stats = []
     for i in range(0, len(video_ids), 50):
         request = youtube.videos().list(
-            part="snippet,statistics",
+            part="snippet,contentDetails,statistics",
             id=",".join(video_ids[i:i+50]))
         response = request.execute()
         for video in response["items"]:
@@ -60,7 +60,29 @@ def get_videos_details(youtube, video_ids):
                 Views=video["statistics"]["viewCount"],
                 Likes=video["statistics"]["likeCount"],
                 Total_fav=video["statistics"]["favoriteCount"],
+                Duracion=video["contentDetails"]["duration"]
                 #  Total_comentarios=video["statistics"]["commentCount"]
             )
             all_video_stats.append(video_stats)
     return all_video_stats
+
+
+# Aquí va a ser para los comentarios
+def get_comments(youtube, video_ids):
+    all_comments = []
+    request = youtube.commentThreads().list(
+        part="snippet",
+        videoId=video_ids
+    )
+    try:
+        response = request.execute()
+        for comment in response["items"]:
+            comment_detail = dict(
+                autor=comment["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"],
+                likes=comment["snippet"]["topLevelComment"]["snippet"]["likeCount"],
+                texto=comment["snippet"]["topLevelComment"]["snippet"]["textDisplay"]
+            )
+            all_comments.append(comment_detail)
+    except:
+        print("El video tenía los comentarios deshabilitados")
+    return all_comments
