@@ -1,6 +1,8 @@
 from selenium import webdriver
 from bs4 import BeautifulSoup
-from en_videos import obtner
+from en_videos import get_channel_stats, get_videos_ids, get_videos_details, get_comments
+from googleapiclient.discovery import build
+import pprint
 
 
 urls = [
@@ -8,6 +10,15 @@ urls = [
 ]
 
 
+api_key = "AIzaSyAas7rC594WDvAwKaXpFgaTCv_-mbTJAUo"
+channel_ids = ["UC3n5uGu18FoCy23ggWWp8tA",
+               "UCoSrY_IQQVpmIRZ9Xf-y93g"
+               ]
+
+youtube = build("youtube", "v3", developerKey=api_key)
+
+
+#  Ya no se usa el main
 def main():
     driver = webdriver.Chrome("chromedriver_win32\\chromedriver.exe")
     driver.get("https://www.youtube.com/channel/{}/videos".format(urls[0]))
@@ -28,4 +39,20 @@ def main():
 
 
 #  main()
-obtner()
+all_data = get_channel_stats(youtube, channel_ids)
+videos = []
+videos_details = []
+comentarios = []
+for i in range(len(all_data)):
+    pprint.pprint(all_data[i])
+    videos = get_videos_ids(youtube, all_data[i]["playlist_id"])
+    print(videos)
+    #  print(get_videos_details(youtube, videos))  #  -- Para el json
+    videos_details = get_videos_details(youtube, videos)
+    #  pprint.pprint(videos_details)
+    for j in range(len(videos)):
+        #  print(f"Video {j}")
+        comentarios.append(get_comments(youtube, videos[j]))
+        #  pprint.pprint(comentarios[j])
+    print("\n\n\n----")
+#  aquí arriba ando imprimiendo el diccionario de datos
