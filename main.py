@@ -41,16 +41,18 @@ def main():
 #  main()
 all_data = get_channel_stats(youtube, channel_ids)
 videos = []
+videos_details = []
 comentarios = []
 for i in range(len(all_data)):
     pprint.pprint(all_data[i])
     videos = get_videos_ids(youtube, all_data[i]["playlist_id"])
     print(videos)
     #  print(get_videos_details(youtube, videos))  #  -- Para el json
-    pprint.pprint(get_videos_details(youtube, videos))
+    videos_details = get_videos_details(youtube, videos)
+    #  pprint.pprint(videos_details)
     for j in range(len(videos)):
-        print(f"Video {j}")
+        #  print(f"Video {j}")
         comentarios.append(get_comments(youtube, videos[j]))
-        pprint.pprint(comentarios[j])
+        #  pprint.pprint(comentarios[j])
     print("\n\n\n----")
 #  aquí arriba ando imprimiendo el diccionario de datos

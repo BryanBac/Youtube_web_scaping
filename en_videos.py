@@ -72,7 +72,8 @@ def get_comments(youtube, video_ids):
     all_comments = []
     request = youtube.commentThreads().list(
         part="snippet",
-        videoId=video_ids
+        videoId=video_ids,
+        maxResults=2,
     )
     try:
         response = request.execute()
