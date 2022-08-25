@@ -72,15 +72,25 @@ def get_videos_details(youtube, video_ids):
             id=",".join(video_ids[i:i+50]))
         response = request.execute()
         for video in response["items"]:
-            video_stats = dict(
-                Title=video["snippet"]["title"],
-                Published_date=video["snippet"]["publishedAt"],
-                Views=video["statistics"]["viewCount"],
-                Likes=video["statistics"]["likeCount"],
-                Total_fav=video["statistics"]["favoriteCount"],
-                Duracion=video["contentDetails"]["duration"]
-                #  Total_comentarios=video["statistics"]["commentCount"]
-            )
+            try:
+                video_stats = dict(
+                    Title=video["snippet"]["title"],
+                    Published_date=video["snippet"]["publishedAt"],
+                    Views=video["statistics"]["viewCount"],
+                    Likes=video["statistics"]["likeCount"],
+                    Total_fav=video["statistics"]["favoriteCount"],
+                    Duracion=video["contentDetails"]["duration"]
+                    #  Total_comentarios=video["statistics"]["commentCount"]
+                )
+            except:
+                video_stats = dict(
+                    Title=video["snippet"]["title"],
+                    Published_date=video["snippet"]["publishedAt"],
+                    Views=video["statistics"]["viewCount"],
+                    Total_fav=video["statistics"]["favoriteCount"],
+                    Duracion=video["contentDetails"]["duration"]
+                    #  Total_comentarios=video["statistics"]["commentCount"]
+                )
             all_video_stats.append(video_stats)
     return all_video_stats
 
