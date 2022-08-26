@@ -17,6 +17,24 @@ def get_channel_stats(youtube, channel_ids):
     return all_data
 
 
+def get_user_channel_stats(youtube, channel_ids):
+    request = youtube.channels().list(
+        part="snippet,contentDetails,statistics",
+        forUsername=",".join(channel_ids)
+    )
+    all_data = []
+    response = request.execute()
+    for i in range(len(response["items"])):
+        data = dict(Channel_name=response["items"][i]["snippet"]["title"],
+                    Subscribers=response["items"][i]["statistics"]["subscriberCount"],
+                    Views=response["items"][i]["statistics"]["viewCount"],
+                    Total_videos=response["items"][i]["statistics"]["videoCount"],
+                    playlist_id=response["items"][i]["contentDetails"]["relatedPlaylists"]["uploads"]
+                    )
+        all_data.append(data)
+    return all_data
+
+
 def get_videos_ids(youtube, playlist_id):
     request = youtube.playlistItems().list(
         part="contentDetails",
@@ -54,15 +72,25 @@ def get_videos_details(youtube, video_ids):
             id=",".join(video_ids[i:i+50]))
         response = request.execute()
         for video in response["items"]:
-            video_stats = dict(
-                Title=video["snippet"]["title"],
-                Published_date=video["snippet"]["publishedAt"],
-                Views=video["statistics"]["viewCount"],
-                Likes=video["statistics"]["likeCount"],
-                Total_fav=video["statistics"]["favoriteCount"],
-                Duracion=video["contentDetails"]["duration"]
-                #  Total_comentarios=video["statistics"]["commentCount"]
-            )
+            try:
+                video_stats = dict(
+                    Title=video["snippet"]["title"],
+                    Published_date=video["snippet"]["publishedAt"],
+                    Views=video["statistics"]["viewCount"],
+                    Likes=video["statistics"]["likeCount"],
+                    Total_fav=video["statistics"]["favoriteCount"],
+                    Duracion=video["contentDetails"]["duration"]
+                    #  Total_comentarios=video["statistics"]["commentCount"]
+                )
+            except:
+                video_stats = dict(
+                    Title=video["snippet"]["title"],
+                    Published_date=video["snippet"]["publishedAt"],
+                    Views=video["statistics"]["viewCount"],
+                    Total_fav=video["statistics"]["favoriteCount"],
+                    Duracion=video["contentDetails"]["duration"]
+                    #  Total_comentarios=video["statistics"]["commentCount"]
+                )
             all_video_stats.append(video_stats)
     return all_video_stats
 
@@ -85,5 +113,5 @@ def get_comments(youtube, video_ids):
             )
             all_comments.append(comment_detail)
     except:
-        print("El video tenía los comentarios deshabilitados")
+        all_comments.append("El video tenía los comentarios deshabilitados")
     return all_comments

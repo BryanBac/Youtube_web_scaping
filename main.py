@@ -1,58 +1,88 @@
-from selenium import webdriver
-from bs4 import BeautifulSoup
-from en_videos import get_channel_stats, get_videos_ids, get_videos_details, get_comments
+from en_videos import get_channel_stats, get_videos_ids, \
+    get_videos_details, get_comments, get_user_channel_stats
 from googleapiclient.discovery import build
 import pprint
 
 
-urls = [
-    "UC3n5uGu18FoCy23ggWWp8tA"
-]
+data_index = open("api_index.txt", 'r')
+data_petición = open("numero_petición.txt", "r")
+index = int(data_index.read())
+petición = int(data_petición.read())
+data_index.close()
+data_petición.close()
+data_index = open("api_index.txt", 'w')
+data_petición = open("numero_petición.txt", "w")
+
+print("------Inicio------")
+print(f"{type(index)}---{index}")
+print(f"{type(petición)}---{petición}")
+petición -= 1
+if petición == 0:
+    index += 1
+    petición = 2
+    if index == 34:  # 34
+        index = 0
+data_index.write(str(index))
+data_petición.write(str(petición))
 
 
-api_key = "AIzaSyAas7rC594WDvAwKaXpFgaTCv_-mbTJAUo"
-channel_ids = ["UC3n5uGu18FoCy23ggWWp8tA",
-               "UCoSrY_IQQVpmIRZ9Xf-y93g"
+api_key = ["AIzaSyAas7rC594WDvAwKaXpFgaTCv_-mbTJAUo",
+           "AIzaSyCtzFyZRlwHUO6uiJlKeYEgH7ZSrJVZcPg",
+           "AIzaSyAOdZEHfQCFm_-lNS24IYUK1coXWzfdPsI"]
+channel_ids = ["UCWDksMO8R0Mew4B89GhO9dA",
+               "UCoSrY_IQQVpmIRZ9Xf-y93g",
+               "UC3n5uGu18FoCy23ggWWp8tA",
+               "UC5CwaMl1eIgY8h02uZw7u8A",
+               "UCI7ktPB6toqucpkkCiolwLg",
+               "UCaBTm46K3l59CIty88Q_jog",
+               "UC1DCedRgGHBdm81E1llLhOQ",
+               "UCgTOIiEgjm58xLjHvDjmgdA",
+               "UCmDfpsIMjCw9bMrwa8dIsTw"
                ]
+user_channel_ids = ["MissaSinfonia"]
 
-youtube = build("youtube", "v3", developerKey=api_key)
 
-
-#  Ya no se usa el main
-def main():
-    driver = webdriver.Chrome("chromedriver_win32\\chromedriver.exe")
-    driver.get("https://www.youtube.com/channel/{}/videos".format(urls[0]))
-    content = driver.page_source.encode("utf-8").strip()
-    soup = BeautifulSoup(content, 'lxml')
-    titles = soup.findAll("a", id="video-title")
-    views = soup.findAll("span", class_="style-scope ytd-grid-video-renderer")
-    suscripciones = soup.findAll("yt-formatted-string", id="subscriber-count")
-    nombre_del_canal = soup.findAll("yt-formatted-string", class_="style-scope ytd-channel-name")
-    i = 0
-    for suscripcion in suscripciones:
-        print(f"---{nombre_del_canal[0].text}---{suscripcion.text}---")
-    for title in titles:
-        link = "https://www.youtube.com" + title.get("href")
-        #  links.append(link)
-        print(title.text, "---", views[i].text, "---", link)
-        i += 2
+#  aquí deberá ir el index así api_key[index] una vez tengamos todas apis
+youtube = build("youtube", "v3", developerKey=api_key[2])
 
 
 #  main()
 all_data = get_channel_stats(youtube, channel_ids)
+all_user_data = get_user_channel_stats(youtube, user_channel_ids)
 videos = []
 videos_details = []
 comentarios = []
 for i in range(len(all_data)):
     pprint.pprint(all_data[i])
     videos = get_videos_ids(youtube, all_data[i]["playlist_id"])
-    print(videos)
-    #  print(get_videos_details(youtube, videos))  #  -- Para el json
     videos_details = get_videos_details(youtube, videos)
-    #  pprint.pprint(videos_details)
+    pprint.pprint(videos_details)
     for j in range(len(videos)):
-        #  print(f"Video {j}")
+        print(f"Video {j}")
         comentarios.append(get_comments(youtube, videos[j]))
-        #  pprint.pprint(comentarios[j])
+        pprint.pprint(comentarios[j])
+    #  all_data[i], videos_details[i], comentarios[i]
+    print("\n\n\n----")
+#  para este punto ya deberían haberse guardado la info de los de arriba
+videos = []
+videos_details = []
+comentarios = []
+for i in range(len(all_user_data)):
+    pprint.pprint(all_user_data[i])
+    videos = get_videos_ids(youtube, all_user_data[i]["playlist_id"])
+    videos_details = get_videos_details(youtube, videos)
+    pprint.pprint(videos_details)
+    for j in range(len(videos)):
+        print(f"Video {j}")
+        comentarios.append(get_comments(youtube, videos[j]))
+        pprint.pprint(comentarios[j])
     print("\n\n\n----")
 #  aquí arriba ando imprimiendo el diccionario de datos
+
+
+#  aquí se reescribiran los archivos
+print("------Final------")
+print(f"{type(index)}---{index}")
+print(f"{type(petición)}---{petición}")
+data_index.close()
+data_petición.close()
