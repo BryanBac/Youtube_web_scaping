@@ -4,8 +4,31 @@ from googleapiclient.discovery import build
 import pprint
 
 
+data_index = open("api_index.txt", 'r')
+data_petición = open("numero_petición.txt", "r")
+index = int(data_index.read())
+petición = int(data_petición.read())
+data_index.close()
+data_petición.close()
+data_index = open("api_index.txt", 'w')
+data_petición = open("numero_petición.txt", "w")
+
+print("------Inicio------")
+print(f"{type(index)}---{index}")
+print(f"{type(petición)}---{petición}")
+petición -= 1
+if petición == 0:
+    index += 1
+    petición = 2
+    if index == 34:  # 34
+        index = 0
+data_index.write(str(index))
+data_petición.write(str(petición))
+
+
 api_key = ["AIzaSyAas7rC594WDvAwKaXpFgaTCv_-mbTJAUo",
-           "AIzaSyCtzFyZRlwHUO6uiJlKeYEgH7ZSrJVZcPg"]
+           "AIzaSyCtzFyZRlwHUO6uiJlKeYEgH7ZSrJVZcPg",
+           "AIzaSyAOdZEHfQCFm_-lNS24IYUK1coXWzfdPsI"]
 channel_ids = ["UCWDksMO8R0Mew4B89GhO9dA",
                "UCoSrY_IQQVpmIRZ9Xf-y93g",
                "UC3n5uGu18FoCy23ggWWp8tA",
@@ -18,7 +41,10 @@ channel_ids = ["UCWDksMO8R0Mew4B89GhO9dA",
                ]
 user_channel_ids = ["MissaSinfonia"]
 
-youtube = build("youtube", "v3", developerKey=api_key[1])
+
+#  aquí deberá ir el index así api_key[index] una vez tengamos todas apis
+youtube = build("youtube", "v3", developerKey=api_key[2])
+
 
 #  main()
 all_data = get_channel_stats(youtube, channel_ids)
@@ -30,11 +56,11 @@ for i in range(len(all_data)):
     pprint.pprint(all_data[i])
     videos = get_videos_ids(youtube, all_data[i]["playlist_id"])
     videos_details = get_videos_details(youtube, videos)
-    #  pprint.pprint(videos_details)
+    pprint.pprint(videos_details)
     for j in range(len(videos)):
-        #  print(f"Video {j}")
+        print(f"Video {j}")
         comentarios.append(get_comments(youtube, videos[j]))
-        #  pprint.pprint(comentarios[j])
+        pprint.pprint(comentarios[j])
     #  all_data[i], videos_details[i], comentarios[i]
     print("\n\n\n----")
 #  para este punto ya deberían haberse guardado la info de los de arriba
@@ -45,10 +71,18 @@ for i in range(len(all_user_data)):
     pprint.pprint(all_user_data[i])
     videos = get_videos_ids(youtube, all_user_data[i]["playlist_id"])
     videos_details = get_videos_details(youtube, videos)
-    #  pprint.pprint(videos_details)
+    pprint.pprint(videos_details)
     for j in range(len(videos)):
-        #  print(f"Video {j}")
+        print(f"Video {j}")
         comentarios.append(get_comments(youtube, videos[j]))
-        #  pprint.pprint(comentarios[j])
+        pprint.pprint(comentarios[j])
     print("\n\n\n----")
 #  aquí arriba ando imprimiendo el diccionario de datos
+
+
+#  aquí se reescribiran los archivos
+print("------Final------")
+print(f"{type(index)}---{index}")
+print(f"{type(petición)}---{petición}")
+data_index.close()
+data_petición.close()
