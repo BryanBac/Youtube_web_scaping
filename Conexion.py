@@ -25,7 +25,7 @@ class Conexion:
         except Error as e:
             print('Error al conectarse con MySQL', e)
 
-    def insertar_dato_canal(self, nombre: str, suscriptores: int, videos: int, vistas: int):
+    def insertar_dato_canal(self, nombre, suscriptores, videos, vistas):
         if self.connection.is_connected():
             query = f"""INSERT INTO Canal(`nombre`, `suscriptores`, `videos`, `vistas`) 
             VALUES (%s, %s, %s, %s)"""
@@ -34,7 +34,7 @@ class Conexion:
             self.connection.commit()
             print('Se han insertado los datos del canal!')
 
-    def insertar_dato_video(self, nombre: str, vistas: int, duracion, likes, fecha, id_canal):
+    def insertar_dato_video(self, nombre, vistas, duracion, likes, fecha, id_canal):
         if self.connection.is_connected():
             query = f"""INSERT INTO Video(`nombre`, `vistas`, `duracion`, `likes`, `fecha`, `Canal_idCanal`) 
             VALUES (%s, %s, %s, %s, %s, %s)"""
@@ -43,7 +43,7 @@ class Conexion:
             self.connection.commit()
             print('Se han insertado los datos del video!')
 
-    def insertar_dato_comentario(self, autor: str, likes: int, texto: str, id_video: int):
+    def insertar_dato_comentario(self, autor, likes, texto, id_video):
         if self.connection.is_connected():
             query = f"""INSERT INTO Comentario(`autor`, `likes`, `texto`, `Video_idVideo`) 
             VALUES (%s, %s, %s, %s)"""

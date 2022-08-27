@@ -81,6 +81,7 @@ for i in range(len(all_data)):
     # ---------↓↓↓Almacenamiento de Datos↓↓↓---------
     # INFO DE CANAL PARA MANDAR A CONSULTA
     nombre_canal = all_data[i].get('Channel_name')
+    nombre_canal = clean(nombre_canal, no_emoji=True, lower=False)  # Quita emojis
     suscriptores = all_data[i].get('Subscribers')
     total_videos = all_data[i].get('Total_videos')
     vistas_canal = all_data[i].get('Views')
@@ -94,6 +95,7 @@ for i in range(len(all_data)):
         # ---------↓↓↓Almacenamiento de Datos↓↓↓---------
         # INFO DE VIDEOS PARA MANDAR A CONSULTA
         nombre_video = videos_details[j].get('Title')
+        nombre_video = clean(nombre_video, no_emoji=True, lower=False)  # Quita emojis
         vistas_video = videos_details[j].get('Views')
         duracion = videos_details[j].get('Duracion')
         likes_video = videos_details[j].get('Likes')
@@ -106,16 +108,24 @@ for i in range(len(all_data)):
 
         comentarios.append(get_comments(youtube, videos[j]))
         pprint.pprint(comentarios[j])
+        comentarios_data = comentarios[j]
 
         # ---------↓↓↓Almacenamiento de Datos↓↓↓---------
-        for k in range(len(comentarios[j])):
+        for k in range(len(comentarios_data)):
             # INFO DE VIDEOS PARA MANDAR A CONSULTA
-            autor = comentarios[j][k].get('autor')
-            likes_comentario = comentarios[j][k].get('likes')
-            texto = comentarios[j][k].get('texto')
-            if len(texto) > 500:
-                texto = texto[0:500]
-            texto = clean(texto, no_emoji=True, lower=False)  # Quita emojis
+            if comentarios_data[k] == 'El video tenía los comentarios deshabilitados':
+                # Si se deshabilitaron los comentarios del video se guarda la info como valores nulos
+                autor = None
+                likes_comentario = None
+                texto = None
+            else:
+                autor = comentarios_data[k].get('autor')
+                autor = clean(autor, no_emoji=True, lower=False)  # Quita emojis
+                likes_comentario = comentarios_data[k].get('likes')
+                texto = comentarios_data[k].get('texto')
+                if len(texto) > 500:
+                    texto = texto[0:500]
+                texto = clean(texto, no_emoji=True, lower=False)  # Quita emojis
             conexion.insertar_dato_comentario(autor, likes_comentario, texto, id_video)
             # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
 
