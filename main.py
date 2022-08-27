@@ -2,6 +2,8 @@ from en_videos import get_channel_stats, get_videos_ids, \
     get_videos_details, get_comments, get_user_channel_stats
 from googleapiclient.discovery import build
 import pprint
+from Conexion import Conexion
+from cleantext import clean
 
 
 data_index = open("api_index.txt", 'r')
@@ -52,15 +54,71 @@ all_user_data = get_user_channel_stats(youtube, user_channel_ids)
 videos = []
 videos_details = []
 comentarios = []
+# Base de Datos Relacional
+conexion = Conexion()
+nombre_canal = None
+suscriptores = None
+total_videos = None
+vistas_canal = None
+id_canal = None
+id_video = None
+nombre_video = None
+vistas_video = None
+duracion = None
+likes_video = None
+fecha = None
+autor = None
+likes_comentario = None
+texto = None
+conexion.conectar()
+
 for i in range(len(all_data)):
     pprint.pprint(all_data[i])
     videos = get_videos_ids(youtube, all_data[i]["playlist_id"])
     videos_details = get_videos_details(youtube, videos)
     pprint.pprint(videos_details)
+
+    # ---------↓↓↓Almacenamiento de Datos↓↓↓---------
+    # INFO DE CANAL PARA MANDAR A CONSULTA
+    nombre_canal = all_data[i].get('Channel_name')
+    suscriptores = all_data[i].get('Subscribers')
+    total_videos = all_data[i].get('Total_videos')
+    vistas_canal = all_data[i].get('Views')
+    conexion.insertar_dato_canal(nombre_canal, suscriptores, total_videos, vistas_canal)
+    id_canal = conexion.obtener_canal_id(nombre_canal)  # Obtiene el id para llave foranea
+    # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
+
     for j in range(len(videos)):
         print(f"Video {j}")
+
+        # ---------↓↓↓Almacenamiento de Datos↓↓↓---------
+        # INFO DE VIDEOS PARA MANDAR A CONSULTA
+        nombre_video = videos_details[j].get('Title')
+        vistas_video = videos_details[j].get('Views')
+        duracion = videos_details[j].get('Duracion')
+        likes_video = videos_details[j].get('Likes')
+        fecha = videos_details[j].get('Published_date')
+        fecha = fecha.replace('T', ' ')
+        fecha = fecha.replace('Z', '')
+        conexion.insertar_dato_video(nombre_video, vistas_video, duracion, likes_video, fecha, id_canal)
+        id_video = conexion.obtener_video_id(nombre_video)  # Obtiene el id para llave foranea
+        # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
+
         comentarios.append(get_comments(youtube, videos[j]))
         pprint.pprint(comentarios[j])
+
+        # ---------↓↓↓Almacenamiento de Datos↓↓↓---------
+        for k in range(len(comentarios[j])):
+            # INFO DE VIDEOS PARA MANDAR A CONSULTA
+            autor = comentarios[j][k].get('autor')
+            likes_comentario = comentarios[j][k].get('likes')
+            texto = comentarios[j][k].get('texto')
+            if len(texto) > 500:
+                texto = texto[0:500]
+            texto = clean(texto, no_emoji=True, lower=False)  # Quita emojis
+            conexion.insertar_dato_comentario(autor, likes_comentario, texto, id_video)
+            # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
+
     #  all_data[i], videos_details[i], comentarios[i]
     print("\n\n\n----")
 #  para este punto ya deberían haberse guardado la info de los de arriba
@@ -86,3 +144,4 @@ print(f"{type(index)}---{index}")
 print(f"{type(petición)}---{petición}")
 data_index.close()
 data_petición.close()
+conexion.desconectar()
