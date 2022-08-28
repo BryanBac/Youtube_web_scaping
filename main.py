@@ -4,7 +4,12 @@ from googleapiclient.discovery import build
 import pprint
 from Conexion import Conexion
 from cleantext import clean
+from mongo import Mongo
+from typing import List
 
+
+dbmongo = Mongo()
+comentarios_Mongo: List = []
 
 data_index = open("api_index.txt", 'r')
 data_petición = open("numero_petición.txt", "r")
@@ -87,6 +92,10 @@ for i in range(len(all_data)):
     vistas_canal = all_data[i].get('Views')
     conexion.insertar_dato_canal(nombre_canal, suscriptores, total_videos, vistas_canal)
     id_canal = conexion.obtener_canal_id(nombre_canal)  # Obtiene el id para llave foranea
+
+    # Insertar canal en MongoAtlas
+    object_id_canal = dbmongo.insertar_canal(nombre_canal, int(suscriptores), int(total_videos), int(vistas_canal))
+
     # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
 
     for j in range(len(videos)):
@@ -127,7 +136,7 @@ for i in range(len(all_data)):
 
     #  all_data[i], videos_details[i], comentarios[i]
     print("\n\n\n----")
-#  para este punto ya deberían haberse guardado la info de los de arriba
+#  para este punto ya debería haberse guardado la info de los de arriba
 videos = []
 videos_details = []
 comentarios = []
