@@ -113,12 +113,8 @@ for i in range(len(all_data)):
         # ---------↓↓↓Almacenamiento de Datos↓↓↓---------
         for k in range(len(comentarios_data)):
             # INFO DE VIDEOS PARA MANDAR A CONSULTA
-            if comentarios_data[k] == 'El video tenía los comentarios deshabilitados':
-                # Si se deshabilitaron los comentarios del video se guarda la info como valores nulos
-                autor = None
-                likes_comentario = None
-                texto = None
-            else:
+            if comentarios_data[k] != 'El video tenía los comentarios deshabilitados':
+                # Si se deshabilitaron no se almacenan los datos
                 autor = comentarios_data[k].get('autor')
                 autor = clean(autor, no_emoji=True, lower=False, to_ascii=False)  # Quita emojis
                 likes_comentario = comentarios_data[k].get('likes')
@@ -126,7 +122,7 @@ for i in range(len(all_data)):
                 if len(texto) > 500:
                     texto = texto[0:500]
                 texto = clean(texto, no_emoji=True, lower=False, to_ascii=False)  # Quita emojis
-            conexion.insertar_dato_comentario(autor, likes_comentario, texto, id_video)
+                conexion.insertar_dato_comentario(autor, likes_comentario, texto, id_video)
             # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
 
     #  all_data[i], videos_details[i], comentarios[i]
