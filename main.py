@@ -31,13 +31,6 @@ if petición == 0:
 data_index.write(str(index))
 data_petición.write(str(petición))
 
-#  aquí se reescribiran los archivos
-print("------Final------")
-print(f"{type(index)}---{index}")
-print(f"{type(petición)}---{petición}")
-data_index.close()
-data_petición.close()
-
 api_key = ["AIzaSyAas7rC594WDvAwKaXpFgaTCv_-mbTJAUo",
            "AIzaSyCtzFyZRlwHUO6uiJlKeYEgH7ZSrJVZcPg",
            "AIzaSyAOdZEHfQCFm_-lNS24IYUK1coXWzfdPsI"]
@@ -167,5 +160,12 @@ for i in range(len(all_user_data)):
         pprint.pprint(comentarios[j])
     print("\n\n\n----")
 #  aquí arriba ando imprimiendo el diccionario de datos
+
+#  aquí se reescribiran los archivos
+print("------Final------")
+print(f"{type(index)}---{index}")
+print(f"{type(petición)}---{petición}")
+data_index.close()
+data_petición.close()
 
 conexion.desconectar()
