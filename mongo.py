@@ -34,4 +34,4 @@ class Mongo:
             "comentarios": comentarios
         }
         self.video.insert_one(nuevo_video)
-        print("Insertad")
+        print("Insertado")
