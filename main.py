@@ -55,7 +55,7 @@ user_channel_ids = ["MissaSinfonia"]
 
 
 #  aquí deberá ir el index así api_key[index] una vez tengamos todas apis
-youtube = build("youtube", "v3", developerKey=api_key[2])
+youtube = build("youtube", "v3", developerKey=api_key[0])
 
 
 #  main()
@@ -95,7 +95,7 @@ for i in range(len(all_data)):
     suscriptores = all_data[i].get('Subscribers')
     total_videos = all_data[i].get('Total_videos')
     vistas_canal = all_data[i].get('Views')
-    # conexion.insertar_dato_canal(nombre_canal, suscriptores, total_videos, vistas_canal)
+    conexion.insertar_dato_canal(nombre_canal, suscriptores, total_videos, vistas_canal)
     id_canal = conexion.obtener_canal_id(nombre_canal)  # Obtiene el id para llave foranea
 
     # Insertar canal en MongoAtlas
@@ -116,7 +116,7 @@ for i in range(len(all_data)):
         fecha = videos_details[j].get('Published_date')
         fecha = fecha.replace('T', ' ')
         fecha = fecha.replace('Z', '')
-        # conexion.insertar_dato_video(nombre_video, vistas_video, duracion, likes_video, fecha, id_canal)
+        conexion.insertar_dato_video(nombre_video, vistas_video, duracion, likes_video, fecha, id_canal)
         id_video = conexion.obtener_video_id(nombre_video)  # Obtiene el id para llave foranea
 
         # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
@@ -143,8 +143,11 @@ for i in range(len(all_data)):
                     "texto": texto,
                     "likes": likes_comentario
                 }
+                print(f"{autor} {likes_comentario} {texto}")
                 comentarios_Mongo.append(nuevo_comentario)
             # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
+        print(len(comentarios_Mongo))
+        print(comentarios_Mongo)
         dbmongo.insertar_video(nombre_video, vistas_video, duracion, likes_video, fecha, object_id_canal,
                                comentarios_Mongo)
     #  all_data[i], videos_details[i], comentarios[i]
