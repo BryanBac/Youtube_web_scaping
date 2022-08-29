@@ -9,7 +9,6 @@ from typing import List
 
 
 dbmongo = Mongo()
-comentarios_Mongo: List = []
 
 data_index = open("api_index.txt", 'r')
 data_petición = open("numero_petición.txt", "r")
@@ -32,6 +31,12 @@ if petición == 0:
 data_index.write(str(index))
 data_petición.write(str(petición))
 
+#  aquí se reescribiran los archivos
+print("------Final------")
+print(f"{type(index)}---{index}")
+print(f"{type(petición)}---{petición}")
+data_index.close()
+data_petición.close()
 
 api_key = ["AIzaSyAas7rC594WDvAwKaXpFgaTCv_-mbTJAUo",
            "AIzaSyCtzFyZRlwHUO6uiJlKeYEgH7ZSrJVZcPg",
@@ -113,12 +118,13 @@ for i in range(len(all_data)):
         fecha = fecha.replace('Z', '')
         conexion.insertar_dato_video(nombre_video, vistas_video, duracion, likes_video, fecha, id_canal)
         id_video = conexion.obtener_video_id(nombre_video)  # Obtiene el id para llave foranea
+
         # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
 
         comentarios.append(get_comments(youtube, videos[j]))
         pprint.pprint(comentarios[j])
         comentarios_data = comentarios[j]
-
+        comentarios_Mongo: List = []
         # ---------↓↓↓Almacenamiento de Datos↓↓↓---------
         for k in range(len(comentarios_data)):
             # INFO DE VIDEOS PARA MANDAR A CONSULTA
@@ -132,8 +138,15 @@ for i in range(len(all_data)):
                     texto = texto[0:500]
                 texto = clean(texto, no_emoji=True, lower=False, to_ascii=False)  # Quita emojis
                 conexion.insertar_dato_comentario(autor, likes_comentario, texto, id_video)
+                nuevo_comentario = {
+                    "autor": autor,
+                    "texto": texto,
+                    "likes": likes_comentario
+                }
+                comentarios_Mongo.append(nuevo_comentario)
             # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
-
+        dbmongo.insertar_video(nombre_video, vistas_video, duracion, likes_video, fecha, object_id_canal,
+                               comentarios_Mongo)
     #  all_data[i], videos_details[i], comentarios[i]
     print("\n\n\n----")
 #  para este punto ya debería haberse guardado la info de los de arriba
@@ -152,11 +165,4 @@ for i in range(len(all_user_data)):
     print("\n\n\n----")
 #  aquí arriba ando imprimiendo el diccionario de datos
 
-
-#  aquí se reescribiran los archivos
-print("------Final------")
-print(f"{type(index)}---{index}")
-print(f"{type(petición)}---{petición}")
-data_index.close()
-data_petición.close()
 conexion.desconectar()

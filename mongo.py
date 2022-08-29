@@ -5,7 +5,7 @@ from typing import List
 class Mongo:
     def __init__(self):
         self.client = MongoClient(
-            "mongodb+srv://Usuario:Contraseña@cluster0.m8f238i.mongodb.net/?retryWrites=true&w=majority")
+            "mongodb+srv://Diego:HolaMundo@cluster0.m8f238i.mongodb.net/?retryWrites=true&w=majority")
         self.db = self.client.get_database('Proyecto')
         self.canal = self.db.Canal
         self.video = self.db.Video
@@ -34,3 +34,4 @@ class Mongo:
             "comentarios": comentarios
         }
         self.video.insert_one(nuevo_video)
+        print("Insertad")
