@@ -98,7 +98,7 @@ for i in range(len(all_data)):
     # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
 
     for j in range(len(videos)):
-        print(f"Video {j}")
+        # print(f"Video {j}")
 
         # ---------↓↓↓Almacenamiento de Datos↓↓↓---------
         # INFO DE VIDEOS PARA MANDAR A CONSULTA
@@ -137,15 +137,15 @@ for i in range(len(all_data)):
                     "texto": texto,
                     "likes": likes_comentario
                 }
-                print(f"{autor} {likes_comentario} {texto}")
+                # print(f"{autor} {likes_comentario} {texto}")
                 comentarios_Mongo.append(nuevo_comentario)
             # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
-        print(len(comentarios_Mongo))
-        print(comentarios_Mongo)
-        dbmongo.insertar_video(nombre_video, vistas_video, duracion, likes_video, fecha, object_id_canal,
+        # print(len(comentarios_Mongo))
+        # print(comentarios_Mongo)
+        dbmongo.insertar_video(nombre_video, int(vistas_video), duracion, int(likes_video), fecha, object_id_canal,
                                comentarios_Mongo)
     #  all_data[i], videos_details[i], comentarios[i]
-    print("\n\n\n----")
+    # print("\n\n\n----")
 #  para este punto ya debería haberse guardado la info de los de arriba
 
 videos = []
@@ -174,7 +174,7 @@ for i in range(len(all_user_data)):
     # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
 
     for j in range(len(videos)):
-        print(f"Video {j}")
+        # print(f"Video {j}")
 
         # ---------↓↓↓Almacenamiento de Datos↓↓↓---------
         # INFO DE VIDEOS PARA MANDAR A CONSULTA
@@ -213,15 +213,15 @@ for i in range(len(all_user_data)):
                     "texto": texto,
                     "likes": likes_comentario
                 }
-                print(f"{autor} {likes_comentario} {texto}")
+                # print(f"{autor} {likes_comentario} {texto}")
                 comentarios_Mongo.append(nuevo_comentario)
             # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
-        print(len(comentarios_Mongo))
-        print(comentarios_Mongo)
+        # print(len(comentarios_Mongo))
+        # print(comentarios_Mongo)
         dbmongo.insertar_video(nombre_video, vistas_video, duracion, likes_video, fecha, object_id_canal,
                                comentarios_Mongo)
     #  all_data[i], videos_details[i], comentarios[i]
-    print("\n\n\n----")
+    # print("\n\n\n----")
 #  para este punto ya debería haberse guardado la info de los de arriba
 
 #  aquí se reescribiran los archivos
