@@ -7,7 +7,6 @@ from cleantext import clean
 from mongo import Mongo
 from typing import List
 
-
 dbmongo = Mongo()
 
 data_index = open("api_index.txt", 'r')
@@ -46,10 +45,8 @@ channel_ids = ["UCWDksMO8R0Mew4B89GhO9dA",
                ]
 user_channel_ids = ["MissaSinfonia"]
 
-
 #  aquí deberá ir el index así api_key[index] una vez tengamos todas apis
 youtube = build("youtube", "v3", developerKey=api_key[index])
-
 
 #  main()
 all_data = get_channel_stats(youtube, channel_ids)
@@ -89,8 +86,9 @@ for i in range(len(all_data)):
     suscriptores = all_data[i].get('Subscribers')
     total_videos = all_data[i].get('Total_videos')
     vistas_canal = all_data[i].get('Views')
-    conexion.insertar_dato_canal(nombre_canal, suscriptores, total_videos, vistas_canal)
-    id_canal = conexion.obtener_canal_id(nombre_canal)  # Obtiene el id para llave foranea
+    # conexion.insertar_dato_canal(nombre_canal, suscriptores, total_videos, vistas_canal)
+    # id_canal = conexion.obtener_canal_id(nombre_canal)  # Obtiene el id para llave foranea
+    id_canal = 2
 
     # Insertar canal en MongoAtlas
     object_id_canal = dbmongo.insertar_canal(nombre_canal, int(suscriptores), int(total_videos), int(vistas_canal))
@@ -110,9 +108,9 @@ for i in range(len(all_data)):
         fecha = videos_details[j].get('Published_date')
         fecha = fecha.replace('T', ' ')
         fecha = fecha.replace('Z', '')
-        conexion.insertar_dato_video(nombre_video, vistas_video, duracion, likes_video, fecha, id_canal)
-        id_video = conexion.obtener_video_id(nombre_video)  # Obtiene el id para llave foranea
-
+        # conexion.insertar_dato_video(nombre_video, vistas_video, duracion, likes_video, fecha, id_canal)
+        # id_video = conexion.obtener_video_id(nombre_video)  # Obtiene el id para llave foranea
+        id_video = 3
         # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
 
         comentarios.append(get_comments(youtube, videos[j]))
@@ -165,7 +163,7 @@ for i in range(len(all_user_data)):
     suscriptores = all_user_data[i].get('Subscribers')
     total_videos = all_user_data[i].get('Total_videos')
     vistas_canal = all_user_data[i].get('Views')
-    conexion.insertar_dato_canal(nombre_canal, suscriptores, total_videos, vistas_canal)
+    # conexion.insertar_dato_canal(nombre_canal, suscriptores, total_videos, vistas_canal)
     id_canal = conexion.obtener_canal_id(nombre_canal)  # Obtiene el id para llave foranea
 
     # Insertar canal en MongoAtlas
@@ -186,7 +184,7 @@ for i in range(len(all_user_data)):
         fecha = videos_details[j].get('Published_date')
         fecha = fecha.replace('T', ' ')
         fecha = fecha.replace('Z', '')
-        conexion.insertar_dato_video(nombre_video, vistas_video, duracion, likes_video, fecha, id_canal)
+        # conexion.insertar_dato_video(nombre_video, vistas_video, duracion, likes_video, fecha, id_canal)
         id_video = conexion.obtener_video_id(nombre_video)  # Obtiene el id para llave foranea
 
         # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
