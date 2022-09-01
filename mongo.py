@@ -51,13 +51,10 @@ class Mongo:
             }
             self.video.update_one({"nombre": nombre}, {'$push': {"historial": Historial_Nuevo}})
         else:
-            print('El video aún NOOOOOOOOOOOOOOOOOO existe')
-            print('Llegan')
-            print(comentarios)
             nuevo_video = {
                 "nombre": nombre,
                 "duracion": duracion,
-                "fecha": fecha,
+                "fecha": datetime.strptime(fecha, '%Y-%m-%d %H:%M:%S'),
                 "canal": id_canal,
                 "comentarios": comentarios,
                 "historial": [

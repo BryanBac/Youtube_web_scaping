@@ -96,12 +96,12 @@ for i in range(len(all_data)):
         nombre_video = clean(nombre_video, no_emoji=True, lower=False, to_ascii=False)  # Quita emojis
         try:
             vistas_video = videos_details[j].get('Views')
-        except:
+        except Exception as e:
             vistas_video = "0"
         duracion = videos_details[j].get('Duracion')
         try:
             likes_video = videos_details[j].get('Likes')
-        except:
+        except Exception as e:
             likes_video = "0"
         print(f"Vistas video: {vistas_video} \n Likes_video {likes_video}")
         fecha = videos_details[j].get('Published_date')
@@ -125,7 +125,7 @@ for i in range(len(all_data)):
                 autor = clean(autor, no_emoji=True, lower=False, to_ascii=False)  # Quita emojis
                 try:
                     likes_comentario = comentarios_data[k].get('likes')
-                except:
+                except Exception as e:
                     likes_comentario = "0"
                 print(f"Likes comentario {likes_comentario}")
                 texto = comentarios_data[k].get('texto')
@@ -192,12 +192,12 @@ for i in range(len(all_user_data)):
         nombre_video = clean(nombre_video, no_emoji=True, lower=False, to_ascii=False)  # Quita emojis
         try:
             vistas_video = videos_details[j].get('Views')
-        except:
+        except Exception as e:
             vistas_video = "0"
         duracion = videos_details[j].get('Duracion')
         try:
             likes_video = videos_details[j].get('Likes')
-        except:
+        except Exception as e:
             likes_video = "0"
         print(f"Vistas video: {vistas_video} \n Likes_video {likes_video}")
         duracion = videos_details[j].get('Duracion')
@@ -222,7 +222,7 @@ for i in range(len(all_user_data)):
                 autor = clean(autor, no_emoji=True, lower=False, to_ascii=False)  # Quita emojis
                 try:
                     likes_comentario = comentarios_data[k].get('likes')
-                except:
+                except Exception as e:
                     likes_comentario = "0"
                 print(f"Likes comentario {likes_comentario}")
                 texto = comentarios_data[k].get('texto')
