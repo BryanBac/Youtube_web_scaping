@@ -29,14 +29,14 @@ class Conexion:
         if self.connection.is_connected():
             query = f"""INSERT INTO Canal(`nombre`) 
             VALUES (%s)"""
-            datos = nombre
+            datos = (nombre,)
             self.cursor.execute(query, datos)
             self.connection.commit()
             print('Se han insertado los datos del canal!')
 
     def insertar_dato_historial_canal(self, suscriptores, videos, vistas, fecha_consulta, id_canal):
         if self.connection.is_connected():
-            query = f"""INSERT INTO HistorialCanal(`suscriptores`, `videos`, `vistas`, `fecha_consulta`, 
+            query = f"""INSERT INTO HistorialCanal(`suscriptores`, `videos`, `vistas`, `fechaConsulta`, 
             `Canal_idCanal`) 
             VALUES (%s, %s, %s, %s, %s)"""
             datos = (suscriptores, videos, vistas, fecha_consulta, id_canal)
