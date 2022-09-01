@@ -25,23 +25,42 @@ class Conexion:
         except Error as e:
             print('Error al conectarse con MySQL', e)
 
-    def insertar_dato_canal(self, nombre, suscriptores, videos, vistas):
+    def insertar_dato_canal(self, nombre):
         if self.connection.is_connected():
-            query = f"""INSERT INTO Canal(`nombre`, `suscriptores`, `videos`, `vistas`) 
-            VALUES (%s, %s, %s, %s)"""
-            datos = (nombre, suscriptores, videos, vistas)
+            query = f"""INSERT INTO Canal(`nombre`) 
+            VALUES (%s)"""
+            datos = nombre
             self.cursor.execute(query, datos)
             self.connection.commit()
             print('Se han insertado los datos del canal!')
 
-    def insertar_dato_video(self, nombre, vistas, duracion, likes, fecha, id_canal):
+    def insertar_dato_historial_canal(self, suscriptores, videos, vistas, fecha_consulta, id_canal):
         if self.connection.is_connected():
-            query = f"""INSERT INTO Video(`nombre`, `vistas`, `duracion`, `likes`, `fecha`, `Canal_idCanal`) 
-            VALUES (%s, %s, %s, %s, %s, %s)"""
-            datos = (nombre, vistas, duracion, likes, fecha, id_canal)
+            query = f"""INSERT INTO HistorialCanal(`suscriptores`, `videos`, `vistas`, `fecha_consulta`, 
+            `Canal_idCanal`) 
+            VALUES (%s, %s, %s, %s, %s)"""
+            datos = (suscriptores, videos, vistas, fecha_consulta, id_canal)
+            self.cursor.execute(query, datos)
+            self.connection.commit()
+            print('Se han insertado los datos del Historial del canal!')
+
+    def insertar_dato_video(self, nombre, duracion, fecha, id_canal):
+        if self.connection.is_connected():
+            query = f"""INSERT INTO Video(`nombre`, `duracion`, `fecha`, `Canal_idCanal`) 
+            VALUES (%s, %s, %s, %s)"""
+            datos = (nombre, duracion, fecha, id_canal)
             self.cursor.execute(query, datos)
             self.connection.commit()
             print('Se han insertado los datos del video!')
+
+    def insertar_dato_historial_video(self, vistas, likes, fecha_consulta, id_video):
+        if self.connection.is_connected():
+            query = f"""INSERT INTO HistorialVideo(`vistas`, `likes`, `fechaConsulta`, `Video_idVideo`) 
+            VALUES (%s, %s, %s, %s)"""
+            datos = (vistas, likes, fecha_consulta, id_video)
+            self.cursor.execute(query, datos)
+            self.connection.commit()
+            print('Se han insertado los datos del Historial del video!')
 
     def insertar_dato_comentario(self, autor, likes, texto, id_video):
         if self.connection.is_connected():
