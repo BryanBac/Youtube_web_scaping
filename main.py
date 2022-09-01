@@ -32,21 +32,13 @@ data_petición.write(str(petición))
 
 api_key = ["AIzaSyAas7rC594WDvAwKaXpFgaTCv_-mbTJAUo",
            "AIzaSyCtzFyZRlwHUO6uiJlKeYEgH7ZSrJVZcPg",
-           "AIzaSyAOdZEHfQCFm_-lNS24IYUK1coXWzfdPsI"]
-channel_ids = ["UCWDksMO8R0Mew4B89GhO9dA",
-               "UCoSrY_IQQVpmIRZ9Xf-y93g",
-               "UC3n5uGu18FoCy23ggWWp8tA",
-               "UC5CwaMl1eIgY8h02uZw7u8A",
-               "UCI7ktPB6toqucpkkCiolwLg",
-               "UCaBTm46K3l59CIty88Q_jog",
-               "UC1DCedRgGHBdm81E1llLhOQ",
-               "UCgTOIiEgjm58xLjHvDjmgdA",
-               "UCmDfpsIMjCw9bMrwa8dIsTw"
+           "AIzaSyC1pm_NEsXj08D1cPQ5c-aydY0lkO8XraQ"]
+channel_ids = ["UC5CwaMl1eIgY8h02uZw7u8A"  # Suisei Ch
                ]
 user_channel_ids = ["MissaSinfonia"]
 
 #  aquí deberá ir el index así api_key[index] una vez tengamos todas apis
-youtube = build("youtube", "v3", developerKey=api_key[index])
+youtube = build("youtube", "v3", developerKey=api_key[2])
 
 #  main()
 all_data = get_channel_stats(youtube, channel_ids)
@@ -102,9 +94,16 @@ for i in range(len(all_data)):
         # INFO DE VIDEOS PARA MANDAR A CONSULTA
         nombre_video = videos_details[j].get('Title')
         nombre_video = clean(nombre_video, no_emoji=True, lower=False, to_ascii=False)  # Quita emojis
-        vistas_video = videos_details[j].get('Views')
+        try:
+            vistas_video = videos_details[j].get('Views')
+        except:
+            vistas_video = "0"
         duracion = videos_details[j].get('Duracion')
-        likes_video = videos_details[j].get('Likes')
+        try:
+            likes_video = videos_details[j].get('Likes')
+        except:
+            likes_video = "0"
+        print(f"Vistas video: {vistas_video} \n Likes_video {likes_video}")
         fecha = videos_details[j].get('Published_date')
         fecha = fecha.replace('T', ' ')
         fecha = fecha.replace('Z', '')
@@ -124,7 +123,11 @@ for i in range(len(all_data)):
                 # Si se deshabilitaron no se almacenan los datos
                 autor = comentarios_data[k].get('autor')
                 autor = clean(autor, no_emoji=True, lower=False, to_ascii=False)  # Quita emojis
-                likes_comentario = comentarios_data[k].get('likes')
+                try:
+                    likes_comentario = comentarios_data[k].get('likes')
+                except:
+                    likes_comentario = "0"
+                print(f"Likes comentario {likes_comentario}")
                 texto = comentarios_data[k].get('texto')
                 if len(texto) > 500:
                     texto = texto[0:500]
@@ -140,6 +143,15 @@ for i in range(len(all_data)):
             # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
         # print(len(comentarios_Mongo))
         # print(comentarios_Mongo)
+        if vistas_video is None:
+            vistas_video = "0"
+            print("Era nulo vistas video")
+        if likes_video is None:
+            likes_video = "0"
+            print("Era nulo likes video")
+        if likes_comentario is None:
+            likes_comentario = "0"
+            print("Era nulo likes comentarios")
         dbmongo.insertar_video(nombre_video, int(vistas_video), duracion, int(likes_video), fecha, object_id_canal,
                                comentarios_Mongo)
     #  all_data[i], videos_details[i], comentarios[i]
@@ -178,9 +190,17 @@ for i in range(len(all_user_data)):
         # INFO DE VIDEOS PARA MANDAR A CONSULTA
         nombre_video = videos_details[j].get('Title')
         nombre_video = clean(nombre_video, no_emoji=True, lower=False, to_ascii=False)  # Quita emojis
-        vistas_video = videos_details[j].get('Views')
+        try:
+            vistas_video = videos_details[j].get('Views')
+        except:
+            vistas_video = "0"
         duracion = videos_details[j].get('Duracion')
-        likes_video = videos_details[j].get('Likes')
+        try:
+            likes_video = videos_details[j].get('Likes')
+        except:
+            likes_video = "0"
+        print(f"Vistas video: {vistas_video} \n Likes_video {likes_video}")
+        duracion = videos_details[j].get('Duracion')
         fecha = videos_details[j].get('Published_date')
         fecha = fecha.replace('T', ' ')
         fecha = fecha.replace('Z', '')
@@ -200,7 +220,11 @@ for i in range(len(all_user_data)):
                 # Si se deshabilitaron no se almacenan los datos
                 autor = comentarios_data[k].get('autor')
                 autor = clean(autor, no_emoji=True, lower=False, to_ascii=False)  # Quita emojis
-                likes_comentario = comentarios_data[k].get('likes')
+                try:
+                    likes_comentario = comentarios_data[k].get('likes')
+                except:
+                    likes_comentario = "0"
+                print(f"Likes comentario {likes_comentario}")
                 texto = comentarios_data[k].get('texto')
                 if len(texto) > 500:
                     texto = texto[0:500]
@@ -216,6 +240,15 @@ for i in range(len(all_user_data)):
             # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
         # print(len(comentarios_Mongo))
         # print(comentarios_Mongo)
+        if vistas_video is None:
+            vistas_video = "0"
+            print("Era nulo vistas video")
+        if likes_video is None:
+            likes_video = "0"
+            print("Era nulo likes video")
+        if likes_comentario is None:
+            likes_comentario = "0"
+            print("Era nulo likes comentarios")
         dbmongo.insertar_video(nombre_video, vistas_video, duracion, likes_video, fecha, object_id_canal,
                                comentarios_Mongo)
     #  all_data[i], videos_details[i], comentarios[i]
