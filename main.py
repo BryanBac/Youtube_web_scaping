@@ -38,7 +38,7 @@ channel_ids = ["UC5CwaMl1eIgY8h02uZw7u8A"  # Suisei Ch
 user_channel_ids = ["MissaSinfonia"]
 
 #  aquí deberá ir el index así api_key[index] una vez tengamos todas apis
-youtube = build("youtube", "v3", developerKey=api_key[2])
+youtube = build("youtube", "v3", developerKey=api_key[index])
 
 #  main()
 all_data = get_channel_stats(youtube, channel_ids)
