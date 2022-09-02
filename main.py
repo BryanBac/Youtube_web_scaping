@@ -82,7 +82,8 @@ for i in range(len(all_data)):
     conexion.insertar_dato_canal(nombre_canal)
     id_canal = conexion.obtener_canal_id(nombre_canal)  # Obtiene el id para llave foranea
     # Insertar historial canal a SQL
-    conexion.insertar_dato_historial_canal(suscriptores, total_videos, vistas_canal, fecha, id_canal)
+    fecha_consulta = conexion.obtener_hora_consulta()
+    conexion.insertar_dato_historial_canal(suscriptores, total_videos, vistas_canal, fecha_consulta, id_canal)
     # Insertar canal en MongoAtlas
     object_id_canal = dbmongo.insertar_canal(nombre_canal, int(suscriptores), int(total_videos), int(vistas_canal))
 
@@ -112,7 +113,8 @@ for i in range(len(all_data)):
         conexion.insertar_dato_video(nombre_video, duracion, fecha, id_canal)
         id_video = conexion.obtener_video_id(nombre_video)  # Obtiene el id para llave foranea
         # Insertar historial video a SQL
-        conexion.insertar_dato_historial_video(vistas_video, likes_video, fecha, id_video)
+        fecha_consulta = conexion.obtener_hora_consulta()
+        conexion.insertar_dato_historial_video(vistas_video, likes_video, fecha_consulta, id_video)
         # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
 
         comentarios.append(get_comments(youtube, videos[j]))
@@ -182,7 +184,8 @@ for i in range(len(all_user_data)):
     conexion.insertar_dato_canal(nombre_canal)
     id_canal = conexion.obtener_canal_id(nombre_canal)  # Obtiene el id para llave foranea
     # Insertar historial canal a SQL
-    conexion.insertar_dato_historial_canal(suscriptores, total_videos, vistas_canal, fecha, id_canal)
+    fecha_consulta = conexion.obtener_hora_consulta()
+    conexion.insertar_dato_historial_canal(suscriptores, total_videos, vistas_canal, fecha_consulta, id_canal)
     # Insertar canal en MongoAtlas
     object_id_canal = dbmongo.insertar_canal(nombre_canal, int(suscriptores), int(total_videos), int(vistas_canal))
 
@@ -213,7 +216,8 @@ for i in range(len(all_user_data)):
         conexion.insertar_dato_video(nombre_video, duracion, fecha, id_canal)
         id_video = conexion.obtener_video_id(nombre_video)  # Obtiene el id para llave foranea
         # Insertar historial video a SQL
-        conexion.insertar_dato_historial_video(vistas_video, likes_video, fecha, id_video)
+        fecha_consulta = conexion.obtener_hora_consulta()
+        conexion.insertar_dato_historial_video(vistas_video, likes_video, fecha_consulta, id_video)
 
         # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
 

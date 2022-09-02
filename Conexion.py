@@ -1,5 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
+from datetime import datetime
 
 
 class Conexion:
@@ -96,6 +97,10 @@ class Conexion:
             else:
                 id_video = row[0][0]
         return id_video
+
+    def obtener_hora_consulta(self):
+        now = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+        return now
 
     def desconectar(self):
         if self.connection.is_connected():
