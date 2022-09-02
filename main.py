@@ -30,15 +30,15 @@ if petición == 0:
 data_index.write(str(index))
 data_petición.write(str(petición))
 
-api_key = ["AIzaSyAas7rC594WDvAwKaXpFgaTCv_-mbTJAUo",
-           "AIzaSyCtzFyZRlwHUO6uiJlKeYEgH7ZSrJVZcPg",
-           "AIzaSyC1pm_NEsXj08D1cPQ5c-aydY0lkO8XraQ"]
+api_key = ["AIzaSyC1pm_NEsXj08D1cPQ5c-aydY0lkO8XraQ",
+           "AIzaSyBlU0GoZ93a0Jds2A2-DJ7oC2LT1rQCLt0",
+           "AIzaSyAas7rC594WDvAwKaXpFgaTCv_-mbTJAUo",
+           "AIzaSyCtzFyZRlwHUO6uiJlKeYEgH7ZSrJVZcPg"]
 channel_ids = ["UCWDksMO8R0Mew4B89GhO9dA",  # vicke blanka
                "UCoSrY_IQQVpmIRZ9Xf-y93g",  # Gura Ch
                "UC3n5uGu18FoCy23ggWWp8tA",  # Mumei Ch
                "UC5CwaMl1eIgY8h02uZw7u8A",  # Suisei ch
                "UCI7ktPB6toqucpkkCiolwLg",  # Pan Piano
-               "UCaBTm46K3l59CIty88Q_jog",  # Juguetes y colores
                "UC1DCedRgGHBdm81E1llLhOQ",  # Pekora Ch
                "UCgTOIiEgjm58xLjHvDjmgdA",  # Spreen
                "UCmDfpsIMjCw9bMrwa8dIsTw"]  # El juaniquilador
@@ -118,6 +118,7 @@ for i in range(len(all_data)):
         # Insertar video a SQL
         conexion.insertar_dato_video(nombre_video, duracion, fecha, id_canal)
         id_video = conexion.obtener_video_id(nombre_video)  # Obtiene el id para llave foranea
+        print(f"Id Video: {id_video}")
         # Insertar historial video a SQL
         conexion.insertar_dato_historial_video(vistas_video, likes_video, fecha, id_video)
         # ---------↑↑↑Almacenamiento de Datos↑↑↑---------
@@ -133,6 +134,7 @@ for i in range(len(all_data)):
                 # Si se deshabilitaron no se almacenan los datos
                 autor = comentarios_data[k].get('autor')
                 autor = clean(autor, no_emoji=True, lower=False, to_ascii=False)  # Quita emojis
+                autor = str(autor)
                 try:
                     likes_comentario = comentarios_data[k].get('likes')
                 except Exception as e:
