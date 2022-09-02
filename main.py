@@ -33,8 +33,15 @@ data_petición.write(str(petición))
 api_key = ["AIzaSyAas7rC594WDvAwKaXpFgaTCv_-mbTJAUo",
            "AIzaSyCtzFyZRlwHUO6uiJlKeYEgH7ZSrJVZcPg",
            "AIzaSyC1pm_NEsXj08D1cPQ5c-aydY0lkO8XraQ"]
-channel_ids = ["UC5CwaMl1eIgY8h02uZw7u8A"  # Suisei Ch
-               ]
+channel_ids = ["UCWDksMO8R0Mew4B89GhO9dA",  # vicke blanka
+               "UCoSrY_IQQVpmIRZ9Xf-y93g",  # Gura Ch
+               "UC3n5uGu18FoCy23ggWWp8tA",  # Mumei Ch
+               "UC5CwaMl1eIgY8h02uZw7u8A",  # Suisei ch
+               "UCI7ktPB6toqucpkkCiolwLg",  # Pan Piano
+               "UCaBTm46K3l59CIty88Q_jog",  # Juguetes y colores
+               "UC1DCedRgGHBdm81E1llLhOQ",  # Pekora Ch
+               "UCgTOIiEgjm58xLjHvDjmgdA",  # Spreen
+               "UCmDfpsIMjCw9bMrwa8dIsTw"]  # El juaniquilador
 user_channel_ids = ["MissaSinfonia"]
 
 #  aquí deberá ir el index así api_key[index] una vez tengamos todas apis
