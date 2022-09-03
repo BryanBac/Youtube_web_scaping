@@ -39,7 +39,6 @@ channel_ids = ["UCWDksMO8R0Mew4B89GhO9dA",  # vicke blanka
                "UC3n5uGu18FoCy23ggWWp8tA",  # Mumei Ch
                "UC5CwaMl1eIgY8h02uZw7u8A",  # Suisei ch
                "UCI7ktPB6toqucpkkCiolwLg",  # Pan Piano
-               "UC1DCedRgGHBdm81E1llLhOQ",  # Pekora Ch
                "UCgTOIiEgjm58xLjHvDjmgdA",  # Spreen
                "UCmDfpsIMjCw9bMrwa8dIsTw"]  # El juaniquilador
 user_channel_ids = ["MissaSinfonia"]
@@ -72,7 +71,7 @@ likes_comentario = None
 texto = None
 conexion.conectar()
 
-for i in range(len(all_data)):
+for i in range(len(channel_ids)):
     pprint.pprint(all_data[i])
     videos = get_videos_ids(youtube, all_data[i]["playlist_id"])
     videos_details = get_videos_details(youtube, videos)
@@ -176,7 +175,7 @@ videos = []
 videos_details = []
 comentarios = []
 
-for i in range(len(all_user_data)):
+for i in range(len(user_channel_ids)):
     pprint.pprint(all_user_data[i])
     videos = get_videos_ids(youtube, all_user_data[i]["playlist_id"])
     videos_details = get_videos_details(youtube, videos)
@@ -270,7 +269,7 @@ for i in range(len(all_user_data)):
         if likes_comentario is None:
             likes_comentario = "0"
             print("Era nulo likes comentarios")
-        dbmongo.insertar_video(nombre_video, vistas_video, duracion, likes_video, fecha, object_id_canal,
+        dbmongo.insertar_video(nombre_video, int(vistas_video), duracion, int(likes_video), fecha, object_id_canal,
                                comentarios_Mongo)
     #  all_data[i], videos_details[i], comentarios[i]
     # print("\n\n\n----")
